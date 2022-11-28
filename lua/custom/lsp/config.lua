@@ -1,5 +1,5 @@
 -- Setup installer & lsp configs
-local mason_ok, mason = pcall(require, 'mason')
+local mason_ok, _ = pcall(require, 'mason')
 
 if not mason_ok then
   return
@@ -11,6 +11,8 @@ local lspconfig = require('lspconfig')
 
 -- Order matters
 local typescript_ok, typescript = pcall(require, 'typescript')
+
+local coq = require("coq")
 
 -- It enables tsserver automatically so no need to call lspconfig.tsserver.setup
 if typescript_ok then
@@ -27,44 +29,44 @@ if typescript_ok then
   })
 end
 
-lspconfig.tsserver.setup(
+lspconfig.tsserver.setup(coq.lsp_ensure_capabilities(
   vim.tbl_deep_extend("force", {
     on_attach = M.on_attach,
     capabilities = M.capabilities,
     flags = {debounce_text_changes = 150},
   }, {})
-)
+))
 
-lspconfig.cssls.setup({
+lspconfig.cssls.setup(coq.lsp_ensure_capabilities({
   capabilities = M.capabilities,
   on_attach = M.on_attach,
   settings = require('custom.lsp.servers.cssls').settings,
-})
+}))
 
-lspconfig.eslint.setup({
+lspconfig.eslint.setup(coq.lsp_ensure_capabilities({
   capabilities = M.capabilities,
   on_attach = M.on_attach,
   settings = require('custom.lsp.servers.eslint').settings,
-})
+}))
 
-lspconfig.jsonls.setup({
+lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
   capabilities = M.capabilities,
   on_attach = M.on_attach,
   settings = require('custom.lsp.servers.jsonls').settings,
-})
+}))
 
-lspconfig.vuels.setup({
+lspconfig.vuels.setup(coq.lsp_ensure_capabilities({
   filetypes = require('custom.lsp.servers.vuels').filetypes,
   init_options = require('custom.lsp.servers.vuels').init_options,
   capabilities = M.capabilities,
   on_attach = M.on_attach,
-})
+}))
 
 for _, server in ipairs { "bashls", "emmet_ls", "graphql", "html", "volar", "prismals" } do
-  lspconfig[server].setup({
+  lspconfig[server].setup(coq.lsp_ensure_capabilities({
     on_attach = M.on_attach,
     capabilities = M.capabilities,
-  })
+  }))
 end
 
 local ufo_config = require('custom.plugins.nvim-ufo')
@@ -73,3 +75,11 @@ require('ufo').setup({
   fold_virt_text_handler = ufo_config.handler,
   close_fold_kinds = { "imports" }
 })
+
+vim.g.coq_settings = {
+  keys = {
+    jump_to_mark = "<C-Tab>",
+  }
+}
+
+vim.cmd("COQnow --shut-up")

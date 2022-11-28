@@ -136,7 +136,6 @@ local plugins = {
 
   ["L3MON4D3/LuaSnip"] = {
     wants = "friendly-snippets",
-    after = "nvim-cmp",
     config = function()
       require("plugins.configs.others").luasnip()
     end,
@@ -150,7 +149,6 @@ local plugins = {
 
   -- misc plugins
   ["windwp/nvim-autopairs"] = {
-    after = "nvim-cmp",
     config = function()
       require("plugins.configs.others").autopairs()
     end,
