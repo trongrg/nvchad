@@ -104,13 +104,19 @@ local plugins = {
     end,
   },
 
+  ["williamboman/mason-lspconfig.nvim"] = {
+    ensure_installed = { "tsserver" },
+    after = "mason.nvim",
+  },
+
   ["neovim/nvim-lspconfig"] = {
     opt = true,
+    after = "mason-lspconfig.nvim",
     setup = function()
       require("core.lazy_load").on_file_open "nvim-lspconfig"
     end,
     config = function()
-      require "plugins.configs.lspconfig"
+      require "custom.lsp.config"
     end,
   },
 

@@ -3,10 +3,18 @@ return {
   ["skwp/greplace.vim"] = {},
   ["ludovicchabant/vim-gutentags"] = {},
   ["editorconfig/editorconfig-vim"] = {},
-  ["tpope/vim-fugitive"] = {},
-  ["tpope/vim-git"] = {},
+  ["tpope/vim-fugitive"] = {}, ["tpope/vim-git"] = {},
   ["mfussenegger/nvim-dap"] = {},
   ["rcarriga/nvim-dap-ui"] = {},
+  ["jose-elias-alvarez/typescript.nvim"] = {},
+  ["williamboman/mason.nvim"] = {
+    override_options = {
+      ensure_installed = { "typescript-language-server", "lua-language-server", "angular-language-server", "intelephense", "json-lsp" }
+    }
+  },
+  ["kevinhwang91/nvim-ufo"] = {
+    requires = "kevinhwang91/promise-async",
+  },
   ["m-demare/hlargs.nvim"] = {
     requires = "nvim-treesitter/nvim-treesitter"
   },
@@ -33,5 +41,14 @@ return {
         extensions_list = { "themes", "terms", "fzf" },
       }
     end,
+  },
+  ["jose-elias-alvarez/null-ls.nvim"] = {},
+  ["lvimuser/lsp-inlayhints.nvim"] = {
+    config = function()
+      require('lsp-inlayhints').setup()
+    end
+  },
+  ["glepnir/lspsaga.nvim"] = {
+    branch = "main",
   },
 }
