@@ -12,8 +12,6 @@ local lspconfig = require('lspconfig')
 -- Order matters
 local typescript_ok, typescript = pcall(require, 'typescript')
 
-local coq = require("coq")
-
 -- It enables tsserver automatically so no need to call lspconfig.tsserver.setup
 if typescript_ok then
   typescript.setup({
@@ -29,44 +27,43 @@ if typescript_ok then
   })
 end
 
-lspconfig.tsserver.setup(coq.lsp_ensure_capabilities(
-  vim.tbl_deep_extend("force", {
+lspconfig.tsserver.setup(vim.tbl_deep_extend("force", {
     on_attach = M.on_attach,
     capabilities = M.capabilities,
     flags = {debounce_text_changes = 150},
   }, {})
-))
+)
 
-lspconfig.cssls.setup(coq.lsp_ensure_capabilities({
+lspconfig.cssls.setup({
   capabilities = M.capabilities,
   on_attach = M.on_attach,
   settings = require('custom.lsp.servers.cssls').settings,
-}))
+})
 
-lspconfig.eslint.setup(coq.lsp_ensure_capabilities({
+lspconfig.eslint.setup({
   capabilities = M.capabilities,
   on_attach = M.on_attach,
   settings = require('custom.lsp.servers.eslint').settings,
-}))
+})
 
-lspconfig.jsonls.setup(coq.lsp_ensure_capabilities({
+lspconfig.jsonls.setup({
   capabilities = M.capabilities,
   on_attach = M.on_attach,
   settings = require('custom.lsp.servers.jsonls').settings,
-}))
+})
 
-lspconfig.vuels.setup(coq.lsp_ensure_capabilities({
+lspconfig.vuels.setup({
   filetypes = require('custom.lsp.servers.vuels').filetypes,
   init_options = require('custom.lsp.servers.vuels').init_options,
   capabilities = M.capabilities,
   on_attach = M.on_attach,
-}))
+})
 
 for _, server in ipairs { "bashls", "emmet_ls", "graphql", "html", "volar", "prismals" } do
-  lspconfig[server].setup(coq.lsp_ensure_capabilities({
+  lspconfig[server].setup({
     on_attach = M.on_attach,
     capabilities = M.capabilities,
-  }))
+  })
 end
 
 local ufo_config = require('custom.plugins.nvim-ufo')
@@ -75,11 +72,3 @@ require('ufo').setup({
   fold_virt_text_handler = ufo_config.handler,
   close_fold_kinds = { "imports" }
 })
-
-vim.g.coq_settings = {
-  keys = {
-    jump_to_mark = "<C-Tab>",
-  }
-}
-
-vim.cmd("COQnow --shut-up")

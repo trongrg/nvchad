@@ -64,16 +64,4 @@ lspconfig.sumneko_lua.setup {
   },
 }
 
-local coq = require("coq")
-
-lspconfig.tsserver.setup(coq.lsp_ensure_capabilities(
-  vim.tbl_deep_extend("force", {
-    on_attach = M.on_attach,
-    capabilities = M.capabilities,
-    flags = {debounce_text_changes = 150},
-  }, {})
-))
-
-vim.cmd("COQnow --shut-up")
-
 return M
