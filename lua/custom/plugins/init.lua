@@ -9,7 +9,7 @@ return {
   ["jose-elias-alvarez/typescript.nvim"] = {},
   ["williamboman/mason.nvim"] = {
     override_options = {
-      ensure_installed = { "typescript-language-server", "lua-language-server", "angular-language-server", "intelephense", "json-lsp" }
+      ensure_installed = { "typescript-language-server", "lua-language-server", "angular-language-server", "intelephense", "json-lsp", "graphql-language-service-cli", "emmet-ls", "vscode-css-language-server" }
     }
   },
   ["kevinhwang91/nvim-ufo"] = {

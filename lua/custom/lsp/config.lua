@@ -5,9 +5,12 @@ if not mason_ok then
   return
 end
 
+require "plugins.configs.mason"
+
 local M = require "plugins.configs.lspconfig"
 
 local lspconfig = require('lspconfig')
+local util = require 'lspconfig.util'
 
 -- Order matters
 local typescript_ok, typescript = pcall(require, 'typescript')
@@ -19,6 +22,11 @@ if typescript_ok then
     debug = false, -- enable debug logging for commands
     -- LSP Config options
     server = {
+      root_dir = function(fname)
+        return util.root_pattern 'nx.json'(fname)
+        or util.root_pattern 'tsconfig.json'(fname)
+          or util.root_pattern('package.json', 'jsconfig.json', '.git')(fname)
+      end,
       on_attach = M.on_attach,
       capabilities = M.capabilities,
       handlers = require('custom.lsp.servers.tsserver').handlers,
@@ -60,7 +68,7 @@ lspconfig.vuels.setup({
 })
 
 for _, server in ipairs { "bashls", "emmet_ls", "graphql", "html", "volar", "prismals" } do
-  lspconfig[server].setup({
+  lspconfig[server].setup(coq.lsp_ensure_capabilities({
     on_attach = M.on_attach,
     capabilities = M.capabilities,
   })
