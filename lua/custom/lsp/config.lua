@@ -24,7 +24,7 @@ if typescript_ok then
     server = {
       root_dir = function(fname)
         return util.root_pattern 'nx.json'(fname)
-        or util.root_pattern 'tsconfig.json'(fname)
+          or util.root_pattern 'tsconfig.json'(fname)
           or util.root_pattern('package.json', 'jsconfig.json', '.git')(fname)
       end,
       on_attach = M.on_attach,
@@ -34,13 +34,6 @@ if typescript_ok then
     }
   })
 end
-
-lspconfig.tsserver.setup(vim.tbl_deep_extend("force", {
-    on_attach = M.on_attach,
-    capabilities = M.capabilities,
-    flags = {debounce_text_changes = 150},
-  }, {})
-)
 
 lspconfig.cssls.setup({
   capabilities = M.capabilities,
@@ -68,15 +61,8 @@ lspconfig.vuels.setup({
 })
 
 for _, server in ipairs { "bashls", "emmet_ls", "graphql", "html", "volar", "prismals" } do
-  lspconfig[server].setup(coq.lsp_ensure_capabilities({
+  lspconfig[server].setup({
     on_attach = M.on_attach,
     capabilities = M.capabilities,
   })
 end
-
-local ufo_config = require('custom.plugins.nvim-ufo')
-
-require('ufo').setup({
-  fold_virt_text_handler = ufo_config.handler,
-  close_fold_kinds = { "imports" }
-})

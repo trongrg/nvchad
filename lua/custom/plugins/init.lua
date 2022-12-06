@@ -12,9 +12,6 @@ return {
       ensure_installed = { "typescript-language-server", "lua-language-server", "angular-language-server", "intelephense", "json-lsp", "graphql-language-service-cli", "emmet-ls", "vscode-css-language-server" }
     }
   },
-  ["kevinhwang91/nvim-ufo"] = {
-    requires = "kevinhwang91/promise-async",
-  },
   ["m-demare/hlargs.nvim"] = {
     requires = "nvim-treesitter/nvim-treesitter"
   },
