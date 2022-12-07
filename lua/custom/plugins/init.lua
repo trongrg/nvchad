@@ -48,4 +48,36 @@ return {
   ["glepnir/lspsaga.nvim"] = {
     branch = "main",
   },
+  ["hrsh7th/cmp-nvim-lua"] = false,
+  ["hrsh7th/cmp-nvim-lsp"] = false,
+  ["hrsh7th/cmp-buffer"] = false,
+  ["hrsh7th/cmp-path"] = false,
+  ["saadparwaiz1/cmp_luasnip"] = false,
+  ["hrsh7th/nvim-cmp"] = false,
+  ["L3MON4D3/LuaSnip"] = {
+    override_options = {
+      after = "ag.vim",
+    },
+  },
+  ["rafamadriz/friendly-snippets"] = {
+    override_options = {
+      module = { },
+    },
+  },
+  ["windwp/nvim-autopairs"] = {
+    override_options = {
+      after = "ag.vim",
+    },
+  },
+  ["ms-jpq/coq_nvim"] = {
+    branch = "coq",
+    cmd = { "COQnow" },
+    run = ":COQnow --shut-up",
+    setup = function()
+      require("core.lazy_load").on_file_open "coq_nvim"
+    end,
+  },
+  ["ms-jpq/coq.artifacts"] = {
+    branch = "artifacts"
+  },
 }
