@@ -8,10 +8,47 @@ local plugins = {
   { "rking/ag.vim", lazy = false },
   { "skwp/greplace.vim", lazy = false },
   { "editorconfig/editorconfig-vim", lazy = false },
-  { "mfussenegger/nvim-dap" },
-  { "rcarriga/nvim-dap-ui" },
-  { "nvim-telescope/telescope-fzf-native.nvim",
-    run = "make",
+  { "mfussenegger/nvim-dap", lazy = false },
+  { "mortepau/codicons.nvim" },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    cmd = { "DapInstall" },
+    dependencies = {
+      { "williamboman/mason.nvim" }
+    },
+    config = function()
+      require("mason-nvim-dap").setup({
+        ensure_installed = { "php", "js" },
+        handlers = {
+          function(config)
+            require('mason-nvim-dap').default_setup(config)
+          end,
+        }
+      })
+    end
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    lazy = false,
+    dependencies = {
+      { "mfussenegger/nvim-dap", lazy = false },
+    },
+    config = function()
+      require("dapui").setup()
+      local dap, dapui = require("dap"), require("dapui")
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+    end, -- Override to setup mason-lspconfig
+  },
+  { "nvim-telescope/telescope-fzy-native.nvim",
+    lazy = false,
   },
   {
     "neovim/nvim-lspconfig",
@@ -43,6 +80,7 @@ local plugins = {
           },
         },
       },
+      extensions_list = { "themes", "terms", "fzy_native" },
     },
   },
 
@@ -54,11 +92,6 @@ local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = overrides.treesitter,
-  },
-
-  {
-    "nvim-tree/nvim-tree.lua",
-    opts = overrides.nvimtree,
   },
 
   -- Install a plugin
