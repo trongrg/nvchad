@@ -11,6 +11,31 @@ local plugins = {
   { "mfussenegger/nvim-dap", lazy = false },
   { "mortepau/codicons.nvim" },
   {
+    "hrsh7th/nvim-cmp",
+    opts = {
+      sources = {
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
+        { name = "buffer" },
+        { name = "nvim_lua" },
+        { name = "path" },
+        { name = "cmp_tabnine" },
+      },
+    },
+
+    dependencies = {
+      {
+        "tzachar/cmp-tabnine",
+        build = "./install.sh",
+        config = function()
+          local tabnine = require "cmp_tabnine.config"
+          tabnine:setup {
+          } -- put your options here
+        end,
+      },
+    },
+  },
+  {
     "jay-babu/mason-nvim-dap.nvim",
     cmd = { "DapInstall" },
     dependencies = {
@@ -45,26 +70,29 @@ local plugins = {
       dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
       end
-    end, -- Override to setup mason-lspconfig
+    end,
   },
   { "nvim-telescope/telescope-fzy-native.nvim",
     lazy = false,
   },
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      -- format & linting
-      {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-          require "custom.configs.null-ls"
-        end,
-      },
-    },
     config = function()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
-    end, -- Override to setup mason-lspconfig
+    end,
+  },
+
+  {
+    "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
+    },
+    config = function()
+      require "custom.configs.null-ls"
+    end,
   },
 
   -- override plugin configs
