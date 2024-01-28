@@ -10,6 +10,7 @@ local plugins = {
   { "editorconfig/editorconfig-vim", lazy = false },
   { "mfussenegger/nvim-dap", lazy = false },
   { "mortepau/codicons.nvim" },
+  { "davidmh/cspell.nvim" },
   {
     "hrsh7th/nvim-cmp",
     opts = {
@@ -82,13 +83,17 @@ local plugins = {
       require "custom.configs.lspconfig"
     end,
   },
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+     enabled = false
+  },
 
   {
     "jay-babu/mason-null-ls.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
+      "nvimtools/none-ls.nvim",
     },
     config = function()
       require "custom.configs.null-ls"

@@ -4,13 +4,16 @@ if not present then
   return
 end
 
+-- local cspell_config = require('custom.configs.cspell')
+
 local b = null_ls.builtins
+
+local cspell = require('cspell')
 
 local sources = {
 
   -- webdev stuff
-  b.formatting.deno_fmt, -- choosed deno for ts/js files cuz its very fast!
-  b.formatting.prettier.with { filetypes = { "html", "markdown", "css" } }, -- so prettier works only on these filetypes
+  b.formatting.prettierd,
 
   -- Lua
   b.formatting.stylua,
@@ -51,19 +54,22 @@ local sources = {
       return utils.root_has_file "psalm.xml" or utils.root_has_file "psalm.xml.dist"
     end,
   },
-
+  -- cspell.diagnostics.with({ config = cspell_config }),
+  cspell.code_action,
 }
 
 require("mason").setup()
-require("mason-null-ls").setup({
+require("mason-null-ls").setup {
   ensure_installed = {
-    'phpcs', 'phpstan', 'phpmd'
+    "phpcs",
+    "phpstan",
+    "phpmd",
     -- Opt to list sources here, when available in mason.
   },
   automatic_installation = true,
-});
+}
 
 null_ls.setup {
-  debug = false,
+  debug = true,
   sources = sources,
 }
